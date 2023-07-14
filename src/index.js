@@ -6,8 +6,6 @@ const inputEl = searchForm.firstElementChild;
 const galleryEl = document.querySelector('.gallery');
 const btnMore = document.querySelector('.load-more')
 
-searchForm.addEventListener('submit', onSearchForm);
-
 const pixabayInctance = new PixabayAPI();
 
 const onSearchForm = async evt => {
@@ -62,3 +60,4 @@ function createMarkup(images) {
   galleryEl.insertAdjacentHTML('beforeend', markup);
 
  };
+searchForm.addEventListener('submit', onSearchForm);
