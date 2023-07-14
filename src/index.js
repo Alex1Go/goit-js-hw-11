@@ -54,7 +54,7 @@ const onSearchForm = async evt => {
             Notiflix.Report.failure("Sorry, there are no images matching your search query. Please try again.", '');
             throw new Error();
         }
-        galleryEl.innerHTML = createMarkup(data.hits)
+        galleryEl.innerHTML = createMarkup()
     } catch (err) {
         console.log(err.message);
     }
