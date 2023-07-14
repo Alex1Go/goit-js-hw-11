@@ -13,7 +13,8 @@ function createMarkup(images) {
     return;
   }
   const markup = images.map(image => {
-      const {
+    const {
+        id,
         largeImageURL,
         webformatURL,
         tags,
@@ -24,7 +25,7 @@ function createMarkup(images) {
       } = image;
       return `
         <a class="gallery__link" href="${largeImageURL}">
-          <div class="gallery-item">
+          <div class="gallery-item" id="${id}">
             <img class="gallery-item__img" src="${webformatURL}" alt="${tags}" loading="lazy" />
             <div class="info">
               <p class="info-item"><b>Likes</b>${likes}</p>
@@ -54,16 +55,36 @@ const onSearchForm = async evt => {
             Notiflix.Report.failure("Sorry, there are no images matching your search query. Please try again.", '');
             throw new Error();
         }
-        galleryEl.innerHTML = createMarkup(data.hits)
+      galleryEl.innerHTML = createMarkup(data.hits);
+      btnMore.classList.remove('is-hidden');
     } catch (err) {
         console.log(err.message);
     }
      
 };
 
+const showMore = async () => {
+  pixabayInctance.page += 1;
+
+  try {
+    const { data } = await pixabayInctance.getImages();
+
+    if (pixabayInctance.page === data.totalHits) {
+      btnMore.classList.add('is-hidden');
+    }
+
+    galleryEl.insertAdjacentHTML(
+      'beforeend',
+      createMarkup(data.hits)
+    );
+  } catch (err) {
+    console.log(err.message);
+  }
+};
 searchForm.addEventListener('submit', onSearchForm);
+btnMore.addEventListener('click', showMore);
 
 searchForm.style.backgroundColor = '#0000FF';
-searchForm.style.paddingLeft = '300px';
+searchForm.style.paddingLeft = '100px';
 searchForm.style.paddingTop = '20px';
 searchForm.style.paddingBottom = '10px';
