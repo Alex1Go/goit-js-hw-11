@@ -9,9 +9,7 @@ const btnMore = document.querySelector('.load-more')
 const pixabayInctance = new PixabayAPI();
 
 function createMarkup(images) {
-  if (!galleryEl) {
-    return;
-  }
+ 
   const markup = images.map(image => {
     const {
         id,
@@ -25,8 +23,8 @@ function createMarkup(images) {
       } = image;
       return `
         <a class="gallery__link" href="${largeImageURL}">
-          <div class="gallery-item" id="${id}">
-            <img class="gallery-item__img" src="${webformatURL}" alt="${tags}" loading="lazy" />
+          <div class="gallery-item" id="${id}">          
+            <img class="gallery-item__img" src="${webformatURL}" alt="${tags}" width="300" height="200" loading="lazy" />
             <div class="info">
               <p class="info-item"><b>Likes</b>${likes}</p>
               <p class="info-item"><b>Views</b>${views}</p>
@@ -48,14 +46,15 @@ const onSearchForm = async evt => {
 
     const searchQuery = inputEl.value.trim();
     pixabayInctance.query = searchQuery;
-    pixabayInctance.page = 1;
+  pixabayInctance.page = 1;
+  
     try {
         const { data } = await pixabayInctance.getImages();
         if (!data.hits.length) {
             Notiflix.Report.failure("Sorry, there are no images matching your search query. Please try again.", '');
             throw new Error();
         }
-      galleryEl.innerHTML = createMarkup(data.hits);
+      createMarkup(data.hits);
       btnMore.classList.remove('is-hidden');
     } catch (err) {
         console.log(err.message);
@@ -88,3 +87,12 @@ searchForm.style.backgroundColor = '#0000FF';
 searchForm.style.paddingLeft = '100px';
 searchForm.style.paddingTop = '20px';
 searchForm.style.paddingBottom = '10px';
+searchForm.style.marginBottom = '10px';
+
+btnMore.style.marginLeft = '100px';
+btnMore.style.marginBottom = '50px';
+
+galleryEl.style.display = 'flex';
+galleryEl.style.flexWrap = 'wrap';
+galleryEl.style.justifyContent = 'space-around'; 
+galleryEl.style.marginBottom = '50px'
