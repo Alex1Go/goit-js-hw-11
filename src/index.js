@@ -10,22 +10,24 @@ searchForm.addEventListener('submit', onSearchForm);
 
 const pixabayInctance = new PixabayAPI();
 
-function onSearchForm(evt) {
+const onSearchForm = async evt => {
     evt.preventDefault();
-    const searchQuery = inputEl.value.trim();
-    if (!searchQuery) {
-        return;
-    }
-    pixabayInctance.query = searchQuery;
 
-    pixabayInctance.getImages().then(data => {
+    const searchQuery = inputEl.value.trim();
+    pixabayInctance.query = searchQuery;
+    pixabayInctance.page = 1;
+    try {
+        const { data } = await pixabayInctance.getImages();
         if (!data.results.length) {
             Notiflix.Report.failure("Sorry, there are no images matching your search query. Please try again.", '');
-            return; 
+            throw new Error();
         }
-       
-   })
-}
+        galleryEl.innerHTML = createMarkup()
+    } catch (err) {
+        console.log(err.message);
+    }
+     
+};
 
 function createMarkup(images) {
   if (!gallery) {
@@ -59,4 +61,4 @@ function createMarkup(images) {
 
   galleryEl.insertAdjacentHTML('beforeend', markup);
 
-};
+ };
