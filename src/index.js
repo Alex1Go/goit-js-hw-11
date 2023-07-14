@@ -63,3 +63,8 @@ const onSearchForm = async evt => {
 
 
 searchForm.addEventListener('submit', onSearchForm);
+
+searchForm.style.backgroundColor = '#0000FF';
+searchForm.style.paddingLeft = '300px';
+searchForm.style.paddingTop = '20px';
+searchForm.style.paddingBottom = '10px';
