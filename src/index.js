@@ -7,12 +7,12 @@ const galleryEl = document.querySelector('.gallery');
 const btnMore = document.querySelector('.load-more')
 
 const pixabayInctance = new PixabayAPI();
+btnMore.style.display = 'none';
 
 function createMarkup(images) {
  
   const markup = images.map(image => {
     const {
-        id,
         largeImageURL,
         webformatURL,
         tags,
@@ -23,7 +23,7 @@ function createMarkup(images) {
       } = image;
       return `
         <a class="gallery__link" href="${largeImageURL}">
-          <div class="gallery-item" id="${id}">          
+          <div class="gallery-item" >          
             <img class="gallery-item__img" src="${webformatURL}" alt="${tags}" width="300" height="200" loading="lazy" />
             <div class="info">
               <p class="info-item"><b>Likes</b>${likes}</p>
@@ -54,11 +54,12 @@ const onSearchForm = async evt => {
     try {
         const { data } = await pixabayInctance.getImages();
         if (!data.hits.length) {
-            Notiflix.Report.failure("Sorry, there are no images matching your search query. Please try again.", '');
+           Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.", '');
             throw new Error();
         }
-      createMarkup(data.hits);
-      btnMore.classList.remove('is-hidden');
+        createMarkup(data.hits);
+        Notiflix.Notify.success(`We found ${data.totalHits} images.`);
+        btnMore.style.display = 'block';
     } catch (err) {
         console.log(err.message);
     }
@@ -72,9 +73,11 @@ const showMore = async () => {
     const { data } = await pixabayInctance.getImages();
 
     if (pixabayInctance.page === data.totalHits) {
-      btnMore.classList.add('is-hidden');
+      btnMore.style.display = 'none';
+       Notiflix.Notify.failure(
+          "We're sorry, but you've reached the end of search results.",
+        );
     }
-
     galleryEl.insertAdjacentHTML(
       'beforeend',
       createMarkup(data.hits)
@@ -93,9 +96,10 @@ searchForm.style.paddingBottom = '10px';
 searchForm.style.marginBottom = '10px';
 
 btnMore.style.marginLeft = '100px';
+btnMore.style.backgroundColor = '#0000FF';
+btnMore.style.color = '#ffffff'
 btnMore.style.marginBottom = '50px';
 
 galleryEl.style.display = 'flex';
 galleryEl.style.flexWrap = 'wrap';
 galleryEl.style.justifyContent = 'space-around'; 
-//galleryEl.style.marginBottom = '50px'
