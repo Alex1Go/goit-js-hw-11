@@ -4,7 +4,7 @@ import Notiflix from 'notiflix';
 const searchForm = document.querySelector('#search-form');
 const inputEl = searchForm.firstElementChild;
 const galleryEl = document.querySelector('.gallery');
-const btnMore = document.querySelector('.load-more')
+const btnMore = document.querySelector('.load-more');
 
 const pixabayInctance = new PixabayAPI();
 btnMore.style.display = 'none';
@@ -50,6 +50,7 @@ const onSearchForm = async evt => {
   }
     pixabayInctance.query = searchQuery;
   pixabayInctance.page = 1;
+   galleryEl.innerHTML = '';
   
     try {
         const { data } = await pixabayInctance.getImages();
@@ -65,14 +66,17 @@ const onSearchForm = async evt => {
     }
      
 };
-
+const perPage = 40;
 const showMore = async () => {
   pixabayInctance.page += 1;
-
+  const totalPages = Math.ceil(data.totalHits / perPpage);
+  
   try {
     const { data } = await pixabayInctance.getImages();
 
-    if (pixabayInctance.page === data.totalHits) {
+    
+
+    if (pixabayInctance.page === totalPages) {
       btnMore.style.display = 'none';
        Notiflix.Notify.failure(
           "We're sorry, but you've reached the end of search results.",
@@ -86,6 +90,8 @@ const showMore = async () => {
     console.log(err.message);
   }
 };
+
+
 searchForm.addEventListener('submit', onSearchForm);
 btnMore.addEventListener('click', showMore);
 
