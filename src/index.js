@@ -49,8 +49,8 @@ const onSearchForm = async evt => {
     return;
   }
     pixabayInctance.query = searchQuery;
-  pixabayInctance.page = 1;
-   galleryEl.innerHTML = '';
+    pixabayInctance.page = 1;
+    galleryEl.innerHTML = '';
   
     try {
         const { data } = await pixabayInctance.getImages();
@@ -61,20 +61,20 @@ const onSearchForm = async evt => {
         createMarkup(data.hits);
         Notiflix.Notify.success(`We found ${data.totalHits} images.`);
         btnMore.style.display = 'block';
+      
     } catch (err) {
         console.log(err.message);
     }
      
 };
-const perPage = 40;
+const per_page = 40;
 const showMore = async () => {
   pixabayInctance.page += 1;
-  const totalPages = Math.ceil(data.totalHits / perPpage);
   
   try {
     const { data } = await pixabayInctance.getImages();
 
-    
+    const totalPages = Math.ceil(data.totalHits / per_page);
 
     if (pixabayInctance.page === totalPages) {
       btnMore.style.display = 'none';
