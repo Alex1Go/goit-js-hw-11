@@ -36,7 +36,7 @@ function createMarkup(images) {
       `;
     })
     .join('');
-
+  //console.log(markup);
   galleryEl.insertAdjacentHTML('beforeend', markup);
 
 };
@@ -44,7 +44,10 @@ function createMarkup(images) {
 const onSearchForm = async evt => {
     evt.preventDefault();
 
-    const searchQuery = inputEl.value.trim();
+  const searchQuery = inputEl.value.trim();
+  if (!searchQuery) {
+    return;
+  }
     pixabayInctance.query = searchQuery;
   pixabayInctance.page = 1;
   
@@ -95,4 +98,4 @@ btnMore.style.marginBottom = '50px';
 galleryEl.style.display = 'flex';
 galleryEl.style.flexWrap = 'wrap';
 galleryEl.style.justifyContent = 'space-around'; 
-galleryEl.style.marginBottom = '50px'
+//galleryEl.style.marginBottom = '50px'
